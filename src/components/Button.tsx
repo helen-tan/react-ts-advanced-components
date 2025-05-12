@@ -16,11 +16,11 @@ export default function Button(props: ButtonProps | AnchorProps) {
 
     if (elem === 'anchor') {
         return (
-            <a {...props}></a>
+            <a className="button" {...props}></a>
         )
     }
 
     return (
-        <button {...props}></button>
+        <button className="button" {...props}></button>
     )
 }
