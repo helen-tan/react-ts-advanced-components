@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
 
 type InputProps = {
     label: string;
@@ -8,13 +8,19 @@ type InputProps = {
 // now this component accepts custom props and the all the standard props of that element
 
 // Wrapper component
-export default function Input(props: InputProps) {
-    const {label, id} = props; // obj destructuring to pull out the props
-
+// forwardRef: receives 2 params: props, ref
+// the type of forwardRef is the type of the value that will eventually be stored in ref
+// forwardRef<type of value the ref will manage, type of props the wrapped fn will receive>
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input (
+    { label, id, ...props }, 
+    ref
+) {
     return (
         <p>
             <label htmlFor={id}>{ label }</label>
-            <input {...props} />
+            <input {...props} ref={ref}/>
         </p>
     )
-}
+});
+
+export default Input;
