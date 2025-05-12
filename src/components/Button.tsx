@@ -2,19 +2,21 @@
 
 import type { ComponentPropsWithoutRef } from "react";
 
-type ButtonProps = {
-    elem: 'button'
-} & ComponentPropsWithoutRef<'button'>;
+type ButtonProps = ComponentPropsWithoutRef<'button'> & {
+    href?: never;
+};
 
-type AnchorProps = {
-    elem: 'anchor'
-} & ComponentPropsWithoutRef<'a'>
+type AnchorProps = ComponentPropsWithoutRef<'a'> & {
+    href?: string;
+}
 
+function isAnchorProps(props: ButtonProps | AnchorProps): props is AnchorProps { // tells TS that if this fn returns true, the arg, props. is of AnchorProps type
+    return ('href' in props); // if href property is part of the props object => means its an anchor
+}
 
 export default function Button(props: ButtonProps | AnchorProps) {
-    const { elem } = props;
 
-    if (elem === 'anchor') {
+    if (isAnchorProps(props)) {
         return (
             <a className="button" {...props}></a>
         )
