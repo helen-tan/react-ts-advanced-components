@@ -2,7 +2,7 @@ import Input from './components/Input';
 import Button from './components/Button';
 import Container from './components/Container';
 import { useRef } from 'react';
-import Form from './components/Form';
+import Form, { type FormHandle } from './components/Form';
 
 type MyFormValues = {
   name: string;
@@ -12,9 +12,13 @@ type MyFormValues = {
 function App() {
   const textInput = useRef<HTMLInputElement>(null);
 
+  const customForm = useRef<FormHandle>(null);
+
   function handleSave(data: unknown) {
     const extractedData = data as MyFormValues;
     console.log('extracted data', extractedData);
+
+    customForm.current?.clear();
   }
 
   return (
@@ -33,7 +37,7 @@ function App() {
         Click Me
       </Container>
 
-      <Form onSave={handleSave}>
+      <Form onSave={handleSave} ref={customForm}>
         <Input id="name" label="Name" type="text"/>
         <Input id="age" label="Age" type="number" />
         <p>

@@ -1,15 +1,31 @@
-import type { ComponentPropsWithoutRef, FormEvent } from "react"
+import { forwardRef, useImperativeHandle, useRef, type ComponentPropsWithoutRef, type FormEvent } from "react"
+
+export type FormHandle = {
+    clear: () => void;
+};
 
 type FormProps = ComponentPropsWithoutRef<'form'> & { // gives an object type that contains all the props accepted by the form element
     onSave: (value: unknown) => void;
 }; // more props to custom Form component
 
-export default function Form(props: FormProps) {
-    const {
-        onSave,
-        children,
-        ...otherProps
-    } = props
+const Form = forwardRef<FormHandle, FormProps>(function Form({ 
+    onSave, 
+    children, 
+    ...otherProps 
+}, 
+ref) {
+    const form = useRef<HTMLFormElement>(null);
+
+    // Expose callable functions (exposing an API)
+    // useImperativeHandle only works in a component that receives a forwarded ref
+    // arg2 is a fn that returns an object that contains any methods you want to call from outside this component
+    useImperativeHandle(ref, () => {
+        return {
+            clear() {
+                form.current?.reset(); // clear form input
+            }
+        }
+    });
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -22,8 +38,10 @@ export default function Form(props: FormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} {...otherProps}>
+        <form onSubmit={handleSubmit} {...otherProps} ref={form}> 
             {children}
         </form>
     )
-}
+})
+
+export default Form;
