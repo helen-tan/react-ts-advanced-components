@@ -4,8 +4,18 @@ import Container from './components/Container';
 import { useRef } from 'react';
 import Form from './components/Form';
 
+type MyFormValues = {
+  name: string;
+  age: string
+}
+
 function App() {
   const textInput = useRef<HTMLInputElement>(null);
+
+  function handleSave(data: unknown) {
+    const extractedData = data as MyFormValues;
+    console.log('extracted data', extractedData);
+  }
 
   return (
     <main>
@@ -23,7 +33,7 @@ function App() {
         Click Me
       </Container>
 
-      <Form>
+      <Form onSave={handleSave}>
         <Input id="name" label="Name" type="text"/>
         <Input id="age" label="Age" type="number" />
         <p>
