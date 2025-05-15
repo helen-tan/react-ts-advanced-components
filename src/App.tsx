@@ -2,6 +2,7 @@ import Input from './components/Input';
 import Button from './components/Button';
 import Container from './components/Container';
 import { useRef } from 'react';
+import Form from './components/Form';
 
 function App() {
   const textInput = useRef<HTMLInputElement>(null);
@@ -21,6 +22,14 @@ function App() {
       <Container as={Button} onClick={() => {console.log("hi")}}>  
         Click Me
       </Container>
+
+      <Form>
+        <Input id="name" label="Name" type="text"/>
+        <Input id="age" label="Age" type="number" />
+        <p>
+          <Button>Save</Button>
+        </p>
+      </Form>
     </main>
   )
 }
